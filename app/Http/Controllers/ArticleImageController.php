@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ArticleImage;
 use App\Http\Requests\StoreArticleImageRequest;
 use App\Http\Requests\UpdateArticleImageRequest;
-use Illuminate\Http\Reuest;
+use Illuminate\Http\Request;
 
 
 class ArticleImageController extends Controller
@@ -17,7 +17,8 @@ class ArticleImageController extends Controller
      */
     public function index()
     {
-        //
+        $articleImages = ArticleImage:: all();
+        return view('articleimage.index', ['articleImages' => $articleImages]);
     }
 
     /**
@@ -42,6 +43,11 @@ class ArticleImageController extends Controller
         $articleImage->alt = $request->image_alt;
 
            // time();
+           $imageName = 'image' . time().'.'.$request->image_src->extension();
+
+           $request->image_src->move(public_path('images') , $imageName);
+
+           $articleImage->src = $imageName;
 
         $articleImage->width = $request->image_width;
         $articleImage->height = $request->image_height;
@@ -70,7 +76,7 @@ class ArticleImageController extends Controller
      */
     public function edit(ArticleImage $articleImage)
     {
-        //
+        return view('articleimage.edit',['articleImage'=> $articleImage]);
     }
 
     /**
@@ -80,9 +86,21 @@ class ArticleImageController extends Controller
      * @param  \App\Models\ArticleImage  $articleImage
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticleImageRequest $request, ArticleImage $articleImage)
+    public function update(Request $request, ArticleImage $articleImage)
     {
-        //
+        // time();
+        if($request->has('image_src')) {
+            $imageName = 'image' . time().'.'.$request->image_src->extension();
+            $request->image_src->move(public_path('images') , $imageName);
+            $articleImage->src = $imageName;
+        }
+        $articleImage->alt = $request->image_alt;
+        $articleImage->width = $request->image_width;
+        $articleImage->height = $request->image_height;
+        $articleImage->class = $request->image_class;
+
+        $articleImage->save();
+        return 0;
     }
 
     /**

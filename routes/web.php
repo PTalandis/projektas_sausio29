@@ -23,11 +23,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::prefix('articleimages')->group(function() {
 
-    //Route::get('', 'App\Http\Controllers\ClientController@index')->name('client.index');
+    Route::get('', 'App\Http\Controllers\ArticleImageController@index')->name('articleimage.index');
     Route::get('create', 'App\Http\Controllers\ArticleImageController@create')->name('articleimage.create');
     Route::post('store', 'App\Http\Controllers\ArticleImageController@store' )->name('articleimage.store');
-    //Route::get('edit/{client}', 'App\Http\Controllers\ClientController@edit')->name('client.edit');
-    //Route::post('update/{client}', 'App\Http\Controllers\ClientController@update')->name('client.update');
+    Route::get('edit/{articleImage}', 'App\Http\Controllers\ArticleImageController@edit')->name('articleimage.edit');
+    Route::post('update/{articleImage}', 'App\Http\Controllers\ArticleImageController@update')->name('articleimage.update');
     //Route::post('destroy/{client}', 'App\Http\Controllers\ClientController@destroy' )->name('client.destroy');
     //Route::get('show/{client}', 'App\Http\Controllers\ClientController@show')->name('client.show');
 
